@@ -1,0 +1,22 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# FastAPI
+.env
+
+# MacOS
+.DS_Store
+
+# NodeJS
+node_modules/
+
+# Vite
+dist/
+
+# VSCode
+.vscode/
+
+# Logs
+*.log

@@ -25,8 +25,7 @@ if not DATABASE_URL:
 def get_connection():
     return psycopg2.connect(
         DATABASE_URL,
-        cursor_factory=RealDictCursor,
-        sslmode="require"
+        cursor_factory=RealDictCursor
     )
 
 app = FastAPI()
@@ -72,6 +71,7 @@ def get_authors():
     authors = cursor.fetchall()
 
     cursor.close()
+    connection.close()
 
     return authors
 
@@ -95,6 +95,8 @@ def create_author(data: dict):
     connection.commit()
 
     cursor.close()
+    connection.close()
+
 
     return {
         "message": "Author created",
@@ -125,6 +127,8 @@ def update_author(id: int, data: dict):
     connection.commit()
 
     cursor.close()
+    connection.close()
+
 
     return {
         "message": "Author updated",
@@ -145,6 +149,7 @@ def delete_author(id: int):
     connection.commit()
 
     cursor.close()
+    connection.close()
 
     return {
         "message": "Author deleted"
@@ -173,6 +178,7 @@ def get_books():
     books = cursor.fetchall()
 
     cursor.close()
+    connection.close()
 
     return books
 
@@ -206,6 +212,7 @@ def create_book(data: dict):
     connection.commit()
 
     cursor.close()
+    connection.close()
 
     return {
         "message": "Book created",
@@ -232,6 +239,7 @@ def update_book(id: int, data: dict):
     if not old_book:
 
         cursor.close()
+        connection.close()
 
         return {
             "message": "Book not found"
@@ -284,6 +292,8 @@ def update_book(id: int, data: dict):
     connection.commit()
 
     cursor.close()
+    connection.close()
+
 
     return {
         "message": "Book updated",
@@ -309,6 +319,7 @@ def delete_book(id: int):
     if not book:
 
         cursor.close()
+        connection.close()
 
         return {
             "message": "Book not found"
@@ -336,6 +347,7 @@ def delete_book(id: int):
     connection.commit()
 
     cursor.close()
+    connection.close()
 
     return {
         "message": "Book deleted"
@@ -368,6 +380,7 @@ def get_reviews():
     reviews = cursor.fetchall()
 
     cursor.close()
+    connection.close()
 
     return reviews
 
@@ -390,6 +403,8 @@ def create_review(data: dict):
 
     if not book:
         cursor.close()
+        connection.close()
+
         return {"message": "Book not found"}
 
     author_id = book["author_id"]
@@ -415,6 +430,7 @@ def create_review(data: dict):
 
     connection.commit()
     cursor.close()
+    connection.close()
 
     return {
         "message": "Review created",
@@ -441,6 +457,8 @@ def update_review(id: int, data: dict):
     if not existing_review:
 
         cursor.close()
+        connection.close()
+
 
         return {
             "message": "Review not found"
@@ -466,6 +484,7 @@ def update_review(id: int, data: dict):
     connection.commit()
 
     cursor.close()
+    connection.close()
 
     return {
         "message": "Review updated",
@@ -485,6 +504,7 @@ def delete_review(id: int):
     connection.commit()
 
     cursor.close()
+    connection.close()
 
     return {
         "message": "Review deleted"

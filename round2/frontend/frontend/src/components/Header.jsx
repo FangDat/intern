@@ -28,9 +28,15 @@ export default function Header() {
 
 return (
     <header className="top-header">
-        <div className="top-header__title">HAIBAZO BOOK REVIEW</div>
 
-        <div className="top-header__current-page">{currentPage}</div>
+        <div className="top-header__title">
+            HAIBAZO BOOK REVIEW
+        </div>
+
+        <div className="top-header__current-page">
+            {currentPage}
+        </div>
+
     </header>
 );
 }

@@ -569,7 +569,7 @@ a {
 }
 
 .top-header {
-  height: 78px;
+  min-height: 90px;
 
   background: white;
 
@@ -577,9 +577,13 @@ a {
 
   display: flex;
 
-  align-items: center;
+  flex-direction: column;
 
-  padding: 0 28px;
+  justify-content: center;
+
+  align-items: flex-start;
+
+  padding: 14px 28px;
 
   position: sticky;
 
@@ -589,22 +593,26 @@ a {
 }
 
 .top-header__title {
-  font-size: 22px;
+  font-size: 28px;
 
   font-weight: 800;
 
   color: #111827;
 
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+
+  letter-spacing: 0.5px;
+}
+.top-header__current-page {
+  font-size: 16px;
+
+  font-weight: 700;
+
+  color: #2563eb;
+
+  letter-spacing: 0.3px;
 }
 
-.top-header__breadcrumb {
-  font-size: 14px;
-
-  color: #6b7280;
-
-  font-weight: 500;
-}
 .pagination {
   display: flex;
 

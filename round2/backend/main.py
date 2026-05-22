@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 import psycopg2
@@ -15,15 +15,19 @@ import os
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise Exception("DATABASE_URL is missing")
 
 # =========================
 # CONNECT DATABASE
 # =========================
 
-connection = psycopg2.connect(
-    DATABASE_URL,
-    cursor_factory=RealDictCursor
-)
+def get_connection():
+    return psycopg2.connect(
+        DATABASE_URL,
+        cursor_factory=RealDictCursor,
+        sslmode="require"
+    )
 
 app = FastAPI()
 
@@ -33,7 +37,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173",
+                   "https://intern-ten-gamma.vercel.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -55,7 +60,7 @@ def root():
 
 @app.get("/authors")
 def get_authors():
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -73,7 +78,7 @@ def get_authors():
 
 @app.post("/authors")
 def create_author(data: dict):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -99,7 +104,7 @@ def create_author(data: dict):
 
 @app.put("/authors/{id}")
 def update_author(id: int, data: dict):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -129,7 +134,7 @@ def update_author(id: int, data: dict):
 
 @app.delete("/authors/{id}")
 def delete_author(id: int):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -151,7 +156,7 @@ def delete_author(id: int):
 
 @app.get("/books")
 def get_books():
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -175,7 +180,7 @@ def get_books():
 
 @app.post("/books")
 def create_book(data: dict):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -209,7 +214,7 @@ def create_book(data: dict):
 
 @app.put("/books/{id}")
 def update_book(id: int, data: dict):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     # =========================
@@ -286,7 +291,7 @@ def update_book(id: int, data: dict):
     }
 @app.delete("/books/{id}")
 def delete_book(id: int):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     # =========================
@@ -341,7 +346,7 @@ def delete_book(id: int):
 
 @app.get("/reviews")
 def get_reviews():
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -369,7 +374,7 @@ def get_reviews():
 
 @app.post("/reviews")
 def create_review(data: dict):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     # =========================
@@ -418,7 +423,7 @@ def create_review(data: dict):
     
 @app.put("/reviews/{id}")
 def update_review(id: int, data: dict):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     # =========================
@@ -469,7 +474,7 @@ def update_review(id: int, data: dict):
     
 @app.delete("/reviews/{id}")
 def delete_review(id: int):
-
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
